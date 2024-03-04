@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:wallpaper_app_pixels_api/screens/widgets/home_grid.dart';
 import 'package:wallpaper_app_pixels_api/utilities/constant.dart';
 
 class Walpaper extends StatefulWidget {
@@ -17,30 +18,15 @@ class WalpaperState extends State<Walpaper> {
       body: SafeArea(
         child: Column(
           children: [
-            Expanded(
-                child: GridView.builder(
-                    itemCount: 20,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 2,
-                        childAspectRatio: 2 / 3,
-                    mainAxisSpacing: 2
-                    ),
-                    itemBuilder: (context, index) {
-                      return Container(
-                        height: 200,
-                        width: 200,
-                        color: Colors.red,
-                      );
-                    })),
+            HomeGrid(),
             TextButton(
                 onPressed: () {},
                 child: Text(
-                  "Load More",
+                  "Load More..",
                   style: kButtonTextStyle,
                 )),
             SizedBox(
-              height: 10.0,
+              height: 8.0,
             ),
           ],
         ),
