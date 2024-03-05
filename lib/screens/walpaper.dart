@@ -1,8 +1,9 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:wallpaper_app_pixels_api/screens/widgets/home_grid.dart';
-import 'package:wallpaper_app_pixels_api/services/fetch_data.dart';
 import 'package:wallpaper_app_pixels_api/utilities/constant.dart';
 
 class Walpaper extends StatefulWidget {
@@ -13,18 +14,45 @@ class Walpaper extends StatefulWidget {
 }
 
 class WalpaperState extends State<Walpaper> {
-  final FetchData fetchdata = FetchData();
+  List images = [];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchDataFromApi();
+  }
+
+  fetchDataFromApi() async {
+    await http.get(Uri.parse("https://api.pexels.com/v1/curated?per_page=80"),
+        headers: {
+          'Authorization':
+              'FibEFjSnOKT24ereH472YjWE08JOz9fElYOo5EAQACHtw7KNgHzgz2PD'
+        }).then((value) {
+      Map pixelResult = jsonDecode(value.body);
+      setState(() {
+        images = pixelResult['photos'];
+      });
+      print(images);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
-            HomeGrid(),
+            HomeGrid(
+              itemcount: images.length,
+              itemBuilder: ItemBuilder(builder: (context, index) {
+                return Image.network(
+                  images[index]['src']['tiny'],
+                  fit: BoxFit.cover,
+                );
+              }),
+            ),
             TextButton(
-                onPressed: () {
-                  fetchdata.fetchDataFromApi();
-                },
+                onPressed: () {},
                 child: Text(
                   "Load More..",
                   style: kButtonTextStyle,
