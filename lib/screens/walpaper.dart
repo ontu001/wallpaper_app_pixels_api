@@ -15,6 +15,7 @@ class Walpaper extends StatefulWidget {
 
 class WalpaperState extends State<Walpaper> {
   List images = [];
+  int page = 1;
   @override
   void initState() {
     // TODO: implement initState
@@ -32,7 +33,23 @@ class WalpaperState extends State<Walpaper> {
       setState(() {
         images = pixelResult['photos'];
       });
-      print(images);
+    });
+  }
+
+  loadMore() async {
+    setState(() {
+      page = page + 1;
+    });
+    String url =
+        "https://api.pexels.com/v1/curated?per_page=80&page=" + page.toString();
+    await http.get(Uri.parse(url), headers: {
+      'Authorization':
+          'FibEFjSnOKT24ereH472YjWE08JOz9fElYOo5EAQACHtw7KNgHzgz2PD'
+    }).then((value) {
+      Map moreImage = jsonDecode(value.body);
+      setState(() {
+        images = moreImage['photos'];
+      });
     });
   }
 
@@ -52,7 +69,9 @@ class WalpaperState extends State<Walpaper> {
               }),
             ),
             TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  loadMore();
+                },
                 child: Text(
                   "Load More..",
                   style: kButtonTextStyle,
