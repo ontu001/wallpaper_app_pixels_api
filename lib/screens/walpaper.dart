@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:wallpaper_app_pixels_api/screens/full_screen_image.dart';
 import 'package:wallpaper_app_pixels_api/screens/widgets/home_grid.dart';
 import 'package:wallpaper_app_pixels_api/utilities/constant.dart';
 
@@ -62,9 +63,14 @@ class WalpaperState extends State<Walpaper> {
             HomeGrid(
               itemcount: images.length,
               itemBuilder: ItemBuilder(builder: (context, index) {
-                return Image.network(
-                  images[index]['src']['tiny'],
-                  fit: BoxFit.cover,
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_)=>FullScreen(imageUrl: images[index]['src']['large2x'],)));
+                  },
+                  child: Image.network(
+                    images[index]['src']['tiny'],
+                    fit: BoxFit.cover,
+                  ),
                 );
               }),
             ),
